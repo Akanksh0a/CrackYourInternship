@@ -1,0 +1,35 @@
+class Solution {
+    public boolean isValid(String s) {
+     Stack<Character> st = new Stack<>();
+        
+        for(char c : s.toCharArray())
+        {
+            // Push the opening brackets onto the stack
+            if(c == '(' || c == '{' || c == '[')
+            {
+                st.push(c);
+            }
+            // Check for closing brackets and ensure the stack is not empty
+            else if(c == ')' && !st.isEmpty() && st.peek() == '(')
+            {
+                st.pop();
+            }
+            else if(c == '}' && !st.isEmpty() && st.peek() == '{')
+            {
+                st.pop();
+            }
+            else if(c == ']' && !st.isEmpty() && st.peek() == '[')
+            {
+                st.pop();
+            }
+            // If it is a closing bracket and the stack is either empty or the top element doesn't match, return false
+            else
+            {
+                return false;
+            }
+        }
+        
+        // If the stack is empty, then the brackets are balanced
+        return st.isEmpty();
+    }
+}
