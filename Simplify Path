@@ -1,0 +1,34 @@
+class Solution {
+private Boolean check(String s) {
+        for (int i = 0; i < s.length(); i++) {
+            if (!Character.isLetter(s.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public String simplifyPath(String path) {
+        String arr[] = path.split("/");
+        Stack<String> st = new Stack<>();
+
+        for (String c : arr) {
+            if (c.equals("..")) {
+                if (!st.isEmpty()) {
+                    st.pop();
+                }
+            } else if (!c.equals("") && !c.equals(".")) {
+                st.push(c);
+            }
+        }
+
+        StringBuilder res = new StringBuilder();
+        for (String dir : st) {
+            res.append("/");
+            res.append(dir);
+        }
+
+        return res.length() > 0 ? res.toString() : "/";
+    }
+   
+}
