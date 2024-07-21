@@ -1,0 +1,23 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        int count = 0;
+        int sum = 0;
+        Map<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1); // Initialize with sum 0 occurring once
+
+        for (int num : nums) {
+            sum += num;
+            // If (sum - k) exists in the map, it means there is a subarray that sums to k
+            if (map.containsKey(sum - k)) {
+                count += map.get(sum - k);
+            }
+            // Add the current sum to the map or update its count
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+        }
+
+        return count;
+    }
+}
