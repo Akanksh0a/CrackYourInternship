@@ -1,0 +1,58 @@
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        // Base case: if list is empty or has only one element, it's already sorted
+        if(head == nullptr || head->next == nullptr) {
+            return head;
+        }
+        
+        // Split the list into two halves
+        ListNode* mid = findMid(head);
+        ListNode* right = mid->next;
+        mid->next = nullptr;
+        
+        // Recursively sort both halves
+        ListNode* left = sortList(head);
+        right = sortList(right);
+        
+        // Merge the two sorted halves
+        return merge(left, right);
+    }
+
+private:
+    ListNode* findMid(ListNode* head) {
+        ListNode* slow = head;
+        ListNode* fast = head->next;
+        
+        // Move slow pointer one step and fast pointer two steps until fast reaches the end
+        while(fast != nullptr && fast->next != nullptr) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        
+        return slow;
+    }
+
+    ListNode* merge(ListNode* left, ListNode* right) {
+        // Use a dummy node to simplify merging logic
+        ListNode dummy(-1);
+        ListNode* ptr = &dummy;
+        
+        // Merge nodes from left and right in sorted order
+        while(left != nullptr && right != nullptr) {
+            if(left->val < right->val) {
+                ptr->next = left;
+                left = left->next;
+            } else {
+                ptr->next = right;
+                right = right->next;
+            }
+            ptr = ptr->next;
+        }
+        
+        // Attach the remaining nodes from either left or right
+        ptr->next = (left != nullptr) ? left : right;
+        
+        return dummy.next;
+    }
+};
